@@ -11,7 +11,7 @@ int getRandomNumber(int min, int max) {
 }
 
 void handleRandomEvent(int* hp, int* treasures) {
-    int event = getRandomNumber(1, 5);
+    int event = getRandomNumber(1, 10);
 
     switch (event) {
         case 1:
@@ -19,8 +19,8 @@ void handleRandomEvent(int* hp, int* treasures) {
             *hp += 20;
             break;
         case 2:
-            printf("Uh-oh! You encounter a trap! -15 HP.\n");
-            *hp -= 15;
+            printf("Uh-oh! You encounter a trap! -40 HP.\n");
+            *hp -= 40;
             break;
         case 3:
             printf("A friendly creature gives you a treasure! +1 treasure.\n");

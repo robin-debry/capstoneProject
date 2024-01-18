@@ -1,13 +1,21 @@
 # include "display.h"
 
 int isValidMove(int x, int y);
-void movePlayer(int* x, int* y);
-int isValidMove(int x, int y) {
+void movePlayer(int* x, int* y, char map[SIZE][SIZE]);
+
+
+
+
+int isValidMove(int x, int y){
     return x >= 0 && x < SIZE && y >= 0 && y < SIZE;
 }
 
+int isValidMoveWall(int x, int y, char map[SIZE][SIZE]) {
+    return map[x][y] != '#';
+}
 
-void movePlayer(int* x, int* y) {
+
+void movePlayer(int* x, int* y, char map[SIZE][SIZE]) {
     int newX, newY;
     printf("Enter the direction to move (1. Up, 2. Down, 3. Left, 4. Right):\n");
     int direction;
@@ -43,9 +51,15 @@ void movePlayer(int* x, int* y) {
     }
 
     if (isValidMove(newX, newY)) {
+        if (!isValidMoveWall(newX, newY, map)) {
+            printf("Invalid move. You cannot go through walls.\n");
+            return;
+        }
         *x = newX;
         *y = newY;
     } else {
         printf("Invalid move. You cannot go outside the labyrinth.\n");
     }
+
+    
 }

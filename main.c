@@ -12,14 +12,14 @@ int main() {
             if (roomType <= 50) {
                 map[i][j] = '.';
             } else if (roomType <= 65) {
-                map[i][j] = '#';
+                map[i][j] = '#'; // # for wall
             } else {
                 map[i][j] = getRandomNumber(1, 2) == 1 ? 'T' : 'E'; // T for treasure, E for enemy
             }
         }
     }
 
-    int PlayerY = 10, playerX = 0;
+    int PlayerY = 0, playerX = 0;
     int hp = MAX_HP;
     int treasures = 0;
 
@@ -46,7 +46,7 @@ int main() {
 
         switch (choice) {
             case 1:
-                movePlayer(&PlayerY, &playerX);
+                movePlayer(&PlayerY, &playerX, map);
                 break;
             case 2:
                 exploreRoom(&hp, &treasures);
