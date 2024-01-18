@@ -61,7 +61,15 @@ void fightEnemy(int* hp) {
         printf("Choose an action: 1. Attack | 2. Run away\n");
 
         int choice;
-        scanf("%d", &choice);
+        while (1) {
+            if (scanf("%d", &choice) == 1) {
+                break;  // Input is a valid integer
+            } else {
+                printf("Invalid input. Please enter a number.\n");
+                while (getchar() != '\n');  // Clear input buffer
+            }
+        }
+
 
         switch (choice) {
             case 1:

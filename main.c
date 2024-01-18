@@ -32,7 +32,17 @@ int main() {
         int choice;
         printf("\nChoose an action:\n");
         printf("1. Move\n2. Explore\n3. Quit\n");
-        scanf("%d", &choice);
+        while (1) {
+            if (scanf("%d", &choice) == 1) {
+                break;  // Input is a valid integer
+            } else {
+                printf("Invalid input. Please enter a number.\n");
+                while (getchar() != '\n');  // Clear invalid input from buffer
+
+            }
+        }
+
+
 
         switch (choice) {
             case 1:

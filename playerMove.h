@@ -9,9 +9,16 @@ int isValidMove(int x, int y) {
 
 void movePlayer(int* x, int* y) {
     int newX, newY;
-    printf("Enter the direction to move (1. Up, 2. Down, 3. Left, 4. Right): ");
+    printf("Enter the direction to move (1. Up, 2. Down, 3. Left, 4. Right):\n");
     int direction;
-    scanf("%d", &direction);
+    while(1) {
+        if (scanf("%d", &direction) == 1) {
+            break;  // Input is a valid integer
+        } else {
+            printf("Invalid input. Please enter a number.\n");
+            while (getchar() != '\n');  // Clear invalid input from buffer
+        }
+    }
 
     switch (direction) {
         case 1:
