@@ -33,7 +33,14 @@ void handleRandomEvent(int* hp, int* treasures) {
 
 
 void exploreRoom(int* hp, int* treasures) {
-    int event = getRandomNumber(1, 3);
+    int event = getRandomNumber(1, 100);
+    if (event <= 70) {
+        event = 1;
+    } else if (event <= 90) {
+        event = 2;
+    } else {
+        event = 3;
+    }
 
     switch (event) {
         case 1:

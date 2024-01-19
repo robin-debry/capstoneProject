@@ -2,9 +2,12 @@
 
 int isValidMove(int x, int y);
 void movePlayer(int* x, int* y, char map[SIZE][SIZE]);
+void clearTerminal();
 
 
-
+void clearTerminal(){
+    system("clear");
+}
 
 int isValidMove(int x, int y){
     return x >= 0 && x < SIZE && y >= 0 && y < SIZE;
@@ -21,6 +24,7 @@ void movePlayer(int* x, int* y, char map[SIZE][SIZE]) {
     int direction;
     while(1) {
         if (scanf("%d", &direction) == 1) {
+            clearTerminal();
             break;  // Input is a valid integer
         } else {
             printf("Invalid input. Please enter a number.\n");
@@ -57,9 +61,12 @@ void movePlayer(int* x, int* y, char map[SIZE][SIZE]) {
         }
         *x = newX;
         *y = newY;
+
+        visited[*x][*y] = 1;
     } else {
         printf("Invalid move. You cannot go outside the labyrinth.\n");
     }
 
     
 }
+

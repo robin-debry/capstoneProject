@@ -11,6 +11,8 @@ void printMap(char map[SIZE][SIZE], int playerX, int playerY);
 void printStats(int hp, int treasures);
 void displayOutcome(int result);
 
+int visited[SIZE][SIZE] = {0};  
+
 void printInstructions() {
     printf("\nInstructions:\n");
     printf("-------------\n");
@@ -28,8 +30,14 @@ void printMap(char map[SIZE][SIZE], int playerX, int playerY) {
         for (int j = 0; j < SIZE; j++) {
             if (i == playerX && j == playerY) {
                 printf("P ");  // Player's current position
+            } else if ((i == playerX - 1 || i == playerX + 1) && j == playerY) {
+                // Display events in the room above or below the player
+                printf("? ");
+            } else if (i == playerX && (j == playerY - 1 || j == playerY + 1)) {
+                // Display events in the room to the left or right of the player
+                printf("? ");
             } else {
-                printf("%c ", map[i][j]);
+                printf(". ");  // Hide other parts of the map
             }
         }
         printf("\n");
