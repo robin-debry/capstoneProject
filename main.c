@@ -19,14 +19,13 @@ int main() {
         }
     }
 
-    int PlayerY = 0, playerX = 0;
-    int hp = MAX_HP;
-    int treasures = 0;
+   
+
 
     printInstructions();
 
     while (1) {
-        printMap(map, PlayerY, playerX);
+        printMap(map, playerY, playerX, visited, wallHits, numWallHits);
         printStats(hp, treasures);
 
         int choice;
@@ -46,7 +45,8 @@ int main() {
 
         switch (choice) {
             case 1:
-                movePlayer(&PlayerY, &playerX, map);
+                movePlayer(&playerY, &playerX, map);
+                visited[playerY][playerX] = 1;
                 break;
             case 2:
                 exploreRoom(&hp, &treasures);
@@ -65,7 +65,7 @@ int main() {
             break;
         }
 
-        if (PlayerY == SIZE - 1 && playerX== SIZE - 1) {
+        if (playerY == SIZE - 1 && playerX== SIZE - 1) {
             displayOutcome(1);  
             break;
         }

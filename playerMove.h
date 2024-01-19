@@ -5,6 +5,18 @@ void movePlayer(int* x, int* y, char map[SIZE][SIZE]);
 void clearTerminal();
 
 
+
+
+
+
+
+int wallHits[MAX_WALLS][2]; // Assuming a maximum of 100 walls
+int numWallHits = 0;
+int playerY = 0, playerX = 0;
+int hp = MAX_HP;
+int treasures = 0;
+int wallAlreadyHit = 0;
+
 void clearTerminal(){
     system("clear");
 }
@@ -25,10 +37,10 @@ void movePlayer(int* x, int* y, char map[SIZE][SIZE]) {
     while(1) {
         if (scanf("%d", &direction) == 1) {
             clearTerminal();
-            break;  // Input is a valid integer
+            break;  
         } else {
             printf("Invalid input. Please enter a number.\n");
-            while (getchar() != '\n');  // Clear invalid input from buffer
+            while (getchar() != '\n'); 
         }
     }
 
@@ -57,6 +69,20 @@ void movePlayer(int* x, int* y, char map[SIZE][SIZE]) {
     if (isValidMove(newX, newY)) {
         if (!isValidMoveWall(newX, newY, map)) {
             printf("Invalid move. You cannot go through walls.\n");
+           
+            for (int i = 0; i < numWallHits; i++) {
+                if (wallHits[i][0] == newX && wallHits[i][1] == newY) {
+                    wallAlreadyHit = 1;
+                    break;
+                }
+            }
+
+            // If the wall has not been hit before, record it
+            if (!wallAlreadyHit && numWallHits < MAX_WALLS) {
+                wallHits[numWallHits][0] = newX;
+                wallHits[numWallHits][1] = newY;
+                numWallHits++;
+            }
             return;
         }
         *x = newX;

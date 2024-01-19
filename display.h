@@ -5,13 +5,18 @@
 #define SIZE 20
 #define MAX_HP 100
 #define MAX_TREASURES 25
+#define MAX_WALLS 100
 
 void printInstructions();
-void printMap(char map[SIZE][SIZE], int playerX, int playerY);
+void printMap(char map[SIZE][SIZE], int playerX, int playerY, int visited[SIZE][SIZE], int wallHits[MAX_WALLS][2], int numWallHits);
 void printStats(int hp, int treasures);
 void displayOutcome(int result);
 
-int visited[SIZE][SIZE] = {0};  
+
+int visited[SIZE][SIZE] = {0};
+
+
+
 
 void printInstructions() {
     printf("\nInstructions:\n");
@@ -24,20 +29,29 @@ void printInstructions() {
 }
 
 // Function to print the game map
-void printMap(char map[SIZE][SIZE], int playerX, int playerY) {
+void printMap(char map[SIZE][SIZE], int playerX, int playerY, int visited[SIZE][SIZE], int wallHits[MAX_WALLS][2], int numWallHits) {
     printf("Current Map:\n");
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
             if (i == playerX && j == playerY) {
                 printf("P ");  // Player's current position
-            } else if ((i == playerX - 1 || i == playerX + 1) && j == playerY) {
-                // Display events in the room above or below the player
-                printf("? ");
-            } else if (i == playerX && (j == playerY - 1 || j == playerY + 1)) {
-                // Display events in the room to the left or right of the player
-                printf("? ");
             } else {
-                printf(". ");  // Hide other parts of the map
+                int isVisited = visited[i][j];
+
+                // Check if the current position is a hit wall
+                int isWallHit = 0;
+                for (int k = 0; k < numWallHits; k++) {
+                    if (wallHits[k][0] == i && wallHits[k][1] == j) {
+                        isWallHit = 1;
+                        break;
+                    }
+                }
+
+                if (isWallHit || isVisited) {
+                    printf("%c ", map[i][j]);
+                } else {
+                    printf(". ");  // Hide other parts of the map
+                }
             }
         }
         printf("\n");
@@ -45,7 +59,6 @@ void printMap(char map[SIZE][SIZE], int playerX, int playerY) {
 
     printf("\n");
 }
-
 // Function to print player stats
 void printStats(int hp, int treasures) {
     printf("Player Stats:\n");
