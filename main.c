@@ -1,39 +1,49 @@
 
 #include "saveGame.h"
 
-// Main function
+
 int main() {
-    
-    
 
-    GameState *gameState = (GameState *)malloc(sizeof(GameState));
 
-    // Check if malloc was successful
-    if (gameState == NULL) {
-        fprintf(stderr, "Memory allocation failed\n");
-        return EXIT_FAILURE;
-    }
+    
+    clearTerminal();
+    GameState *gameState = malloc(sizeof(GameState));  
+
+
+     if (gameState == NULL) {
+         fprintf(stderr, "Memory allocation failed\n");
+         return EXIT_FAILURE;
+     }
 
 
     FILE *saveFile = fopen("savegame.dat", "rb");
     if (saveFile == NULL) {
         printf("No previous game found.\n");
         printf("Starting a new game...\n");
-    } else {
-    
-        
-        loadGame(saveFile, gameState);
-        fclose(saveFile);
-    }
 
+        
+    } else {
+        fclose(saveFile);
+        
+        loadGame("savegame.dat", gameState);
+        playerX = gameState->playerX;
+        playerY = gameState->playerY;
+        hp = gameState->hp;
+        attack = gameState->attack;
+        treasures = gameState->treasures;
+        numWallHits = gameState->numWallHits;
+    }
+    
+
+    
     char map[SIZE][SIZE];
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
-            // 50% chance for an empty room, 15% chance for a wall, 35% chance for a special room
+            // 60% chance for an empty room, 15% chance for a wall, 25% chance for a special room
             int roomType = getRandomNumber(1, 100);
-            if (roomType <= 50) {
+            if (roomType <= 60) {
                 map[i][j] = '.';
-            } else if (roomType <= 65) {
+            } else if (roomType <= 75) {
                 map[i][j] = '#'; // # for wall
             } else {
                 map[i][j] = getRandomNumber(1, 2) == 1 ? 'T' : 'E'; // T for treasure, E for enemy
@@ -53,10 +63,10 @@ int main() {
         printf("1. Move\n2. Explore\n3. Save and Quit\n4. Quit without saving\n");
         while (1) {
             if (scanf("%d", &choice) == 1) {
-                break;  // Input is a valid integer
+                break;  
             } else {
                 printf("Invalid input. Please enter a number.\n");
-                while (getchar() != '\n');  // Clear invalid input from buffer
+                while (getchar() != '\n');  
 
             }
         }
@@ -70,14 +80,25 @@ int main() {
                 break;
            case 3:
                 printf("Saving the game...\n");
+                gameState = (GameState*) malloc(sizeof(GameState));
+                if (gameState == NULL) {
+                    fprintf(stderr, "Memory allocation failed\n");
+                    return EXIT_FAILURE;
+                }
+                gameState->playerX = playerX;
+                gameState->playerY = playerY;
+                gameState->hp = hp;
+                gameState->attack = attack;
+                gameState->treasures = treasures;
+                gameState->numWallHits = numWallHits;
                 saveGame("savegame.dat", gameState);
                 printf("Game saved. See you next time!\n");
-                free(gameState); // Release allocated memory
+                free(gameState); 
                 return 0;
 
             case 4:
                 printf("Quitting the game. See you next time!\n");
-                free(gameState); // Release allocated memory
+                free(gameState); 
                 return 0;
 
             default:

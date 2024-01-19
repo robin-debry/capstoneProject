@@ -7,7 +7,7 @@ void fightEnemy(int* hp);
 int getRandomNumber(int min, int max);
 
 
-int wallHits[MAX_WALLS][2]; // Assuming a maximum of 100 walls
+int wallHits[MAX_WALLS][2];
 int numWallHits = 0;
 int playerY = 0, playerX = 0;
 int hp = MAX_HP;
@@ -33,11 +33,17 @@ int isValidMoveWall(int x, int y, char map[SIZE][SIZE]) {
 
 
 int getRandomNumber(int min, int max) {
+    static int seed_set = 0;
+    if (!seed_set) {
+        srand((unsigned int)time(NULL));
+        seed_set = 1;
+    }
     return rand() % (max - min + 1) + min;
 }
 
 void movePlayer(int* x, int* y, char map[SIZE][SIZE]) {
     int newX, newY;
+    wallAlreadyHit = 0;
     printf("Enter the direction to move (1. Up, 2. Down, 3. Left, 4. Right):\n");
     int direction;
     
@@ -84,7 +90,7 @@ void movePlayer(int* x, int* y, char map[SIZE][SIZE]) {
                 }
             }
 
-            // If the wall has not been hit before, record it
+            
             if (!wallAlreadyHit && numWallHits < MAX_WALLS) {
                 wallHits[numWallHits][0] = newX;
                 wallHits[numWallHits][1] = newY;
@@ -123,10 +129,10 @@ void fightEnemy(int* hp) {
         int choice;
         while (1) {
             if (scanf("%d", &choice) == 1) {
-                break;  // Input is a valid integer
+                break;  
             } else {
                 printf("Invalid input. Please enter a number.\n");
-                while (getchar() != '\n');  // Clear input buffer
+                while (getchar() != '\n');  
             }
         }
 
@@ -139,8 +145,14 @@ void fightEnemy(int* hp) {
                     printf("You attack the enemy!\nYou deal %d damage!\nThe enemy's HP is now %d.\n",attack, enemyHP);
                     *hp -= getRandomNumber(10, 20);
                     
-                    printf("The enemy attacks! Your HP is now %d.\n", *hp);
-                    break;
+                    if (*hp <= 0) {
+                        printf("The enemy attacks! Your HP is now 0.\n");
+                        break;
+                    }
+                    else {
+                        printf("The enemy attacks! Your HP is now %d.\n", *hp);
+                        break;
+                    }
                 }
                 else {
                     printf("You attack the enemy! The enemy's HP is now 0.\n");

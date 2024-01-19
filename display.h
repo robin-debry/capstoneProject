@@ -3,7 +3,7 @@
 #include <time.h>
 
 #define SIZE 20
-#define MAX_HP 100
+#define MAX_HP 1000
 #define MAX_TREASURES 25
 #define MAX_WALLS 100
 
@@ -66,6 +66,8 @@ void printStats(int hp, int treasures) {
     printf("HP: %d/%d\n", hp, MAX_HP);
     printf("------------------------\n");
     printf("Treasures collected: %d/%d\n", treasures, MAX_TREASURES);
+    printf("------------------------\n");
+
 }
 
 // Function to display game outcome
@@ -73,12 +75,15 @@ void displayOutcome(int result) {
     switch (result) {
         case 0:
             printf("Game over! You ran out of HP. Better luck next time!\n");
+            remove("savegame.dat");
             break;
         case 1:
             printf("Congratulations! You reached the exit and won the game!\n");
+            remove("savegame.dat");
             break;
         case 2:
             printf("Congratulations! You collected all treasures and won the game!\n");
+            remove("savegame.dat");
             break;
         default:
             break;
