@@ -7,6 +7,9 @@
 #define MAX_TREASURES 25
 #define MAX_WALLS 100
 
+
+
+
 void printInstructions();
 void printMap(char map[SIZE][SIZE], int playerX, int playerY, int visited[SIZE][SIZE], int wallHits[MAX_WALLS][2], int numWallHits);
 void printStats(int hp, int treasures);
@@ -16,8 +19,7 @@ void displayOutcome(int result);
 int visited[SIZE][SIZE] = {0};
 
 
-
-
+// Function to print game instructions
 void printInstructions() {
     printf("\nInstructions:\n");
     printf("-------------\n");
@@ -37,20 +39,18 @@ void printMap(char map[SIZE][SIZE], int playerX, int playerY, int visited[SIZE][
                 printf("P ");  // Player's current position
             } else {
                 int isVisited = visited[i][j];
-
-                // Check if the current position is a hit wall
                 int isWallHit = 0;
+                
                 for (int k = 0; k < numWallHits; k++) {
                     if (wallHits[k][0] == i && wallHits[k][1] == j) {
                         isWallHit = 1;
                         break;
                     }
                 }
-
                 if (isWallHit || isVisited) {
                     printf("%c ", map[i][j]);
                 } else {
-                    printf(". ");  // Hide other parts of the map
+                    printf(". ");
                 }
             }
         }

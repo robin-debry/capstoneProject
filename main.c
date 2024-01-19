@@ -1,8 +1,30 @@
 
-#include "event.h"
+#include "saveGame.h"
 
 // Main function
 int main() {
+    
+    
+
+    GameState *gameState = (GameState *)malloc(sizeof(GameState));
+
+    // Check if malloc was successful
+    if (gameState == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return EXIT_FAILURE;
+    }
+
+
+    FILE *saveFile = fopen("savegame.dat", "rb");
+    if (saveFile == NULL) {
+        printf("No previous game found.\n");
+        printf("Starting a new game...\n");
+    } else {
+    
+        
+        loadGame(saveFile, gameState);
+        fclose(saveFile);
+    }
 
     char map[SIZE][SIZE];
     for (int i = 0; i < SIZE; i++) {
@@ -19,8 +41,6 @@ int main() {
         }
     }
 
-   
-
 
     printInstructions();
 
@@ -30,7 +50,7 @@ int main() {
 
         int choice;
         printf("\nChoose an action:\n");
-        printf("1. Move\n2. Explore\n3. Quit\n");
+        printf("1. Move\n2. Explore\n3. Save and Quit\n4. Quit without saving\n");
         while (1) {
             if (scanf("%d", &choice) == 1) {
                 break;  // Input is a valid integer
@@ -40,9 +60,6 @@ int main() {
 
             }
         }
-
-
-
         switch (choice) {
             case 1:
                 movePlayer(&playerY, &playerX, map);
@@ -51,9 +68,18 @@ int main() {
             case 2:
                 exploreRoom(&hp, &treasures);
                 break;
-            case 3:
-                printf("Quitting the game. See you next time!\n");
+           case 3:
+                printf("Saving the game...\n");
+                saveGame("savegame.dat", gameState);
+                printf("Game saved. See you next time!\n");
+                free(gameState); // Release allocated memory
                 return 0;
+
+            case 4:
+                printf("Quitting the game. See you next time!\n");
+                free(gameState); // Release allocated memory
+                return 0;
+
             default:
                 printf("Invalid choice. Please choose again.\n");
         }
